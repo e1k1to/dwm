@@ -65,6 +65,9 @@ static const char *firefoxpr[]= { "firefox"  , "-private", NULL };
 static const char *discord[]  = { "discord"  , "NULL" };
 static const char *screenshot[]= { "screenshot", NULL };
 static const char *pavucontrol[]={ "pavucontrol", NULL };
+static const char *volumeup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL };
+static const char *volumedown[]= {"pactl", "set-sink-volume", "0", "-5%", NULL };
+
 static Key keys[] = {
 	/* modifier                     key  	  function       	 argument */
 	{ MODKEY,                       XK_p,      spawn,         	{.v = dmenucmd } },
@@ -75,6 +78,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,				XK_d,	   spawn,			{.v = discord  } },
 	{ MODKEY|ShiftMask,				XK_v,	   spawn,			{.v = pavucontrol } },
 	{ MODKEY,                       XK_b,      togglebar,     	{0} },
+	{0,								XF86XK_AudioLowerVolume, spawn, {.v = volumedown } },
+	{0,								XF86XK_AudioRaiseVolume, spawn, {.v = volumeup } },
 	{ MODKEY,                       XK_j,      focusstack,    	{.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,    	{.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     	{.i = +1 } },
