@@ -55,34 +55,26 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *firefox[]  = { "firefox"  , NULL };
-static const char *firefoxpr[]= { "firefox"  , "-private", NULL };
-static const char *discord[]  = { "discord"  , "NULL" };
-static const char *screenshot[]= { "screenshot", NULL };
-static const char *pavucontrol[]={ "pavucontrol", NULL };
-static const char *brupcmd[] = { "brightnessctl", "set", "10%+", NULL };
-static const char *brdowncmd[] = { "brightnessctl", "set", "10%-", NULL };
-static const char *volumeup[] = { "pactl", "set-sink-volume", "0", "+5%", NULL };
-static const char *volumedown[]= {"pactl", "set-sink-volume", "0", "-5%", NULL };
 
 static Key keys[] = {
 	/* modifier                     key  	  function       	 argument */
 	{ MODKEY,                       XK_p,      spawn,         	{.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_f,      spawn,         	{.v = firefox  } },
-	{ MODKEY|ShiftMask,             XK_p,      spawn,         	{.v = firefoxpr} },
+	{ MODKEY|ShiftMask,             XK_f,      spawn,         	SHCMD("firefox") },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,         	SHCMD("firefox -private") },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,         	{.v = termcmd  } },
-	{ 0,							XK_Print,  spawn,			{.v = screenshot } },
-	{ MODKEY|ShiftMask,				XK_d,	   spawn,			{.v = discord  } },
-	{ MODKEY|ShiftMask,				XK_v,	   spawn,			{.v = pavucontrol } },
+	{ 0,				XK_Print,  spawn,		SHCMD("screenshot") },
+	{ MODKEY|ShiftMask,		XK_d,	   spawn,		SHCMD("discord") },
+	{ MODKEY|ShiftMask,		XK_v,	   spawn,		SHCMD("pavucontrol") },
 	{ MODKEY,                       XK_b,      togglebar,     	{0} },
-	{0, 							XF86XK_MonBrightnessUp,	spawn,	{.v = brupcmd} },
-	{ 0,							XF86XK_MonBrightnessDown,	spawn,	{.v = brdowncmd} },
-	{0,								XF86XK_AudioLowerVolume, spawn, {.v = volumedown } },
-	{0,								XF86XK_AudioRaiseVolume, spawn, {.v = volumeup } },
+	{ 0, 				XF86XK_MonBrightnessUp,	spawn,	SHCMD("brightnessctl set 10%-") },
+	{ 0,				XF86XK_MonBrightnessDown,spawn,	SHCMD("brightnessctl set 10%+") },
+	{ 0,				XF86XK_AudioLowerVolume,spawn, 	SHCMD("pactl set-sink-volume 0 -5%; pkill -RTMIN+10 dwmblocks") },
+	{ 0,				XF86XK_AudioRaiseVolume,spawn, 	SHCMD("pactl set-sink-volume 0 +5%; pkill -RTMIN+10 dwmblocks") },
 	{ MODKEY,                       XK_j,      focusstack,    	{.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,    	{.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     	{.i = +1 } },
